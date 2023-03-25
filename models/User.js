@@ -1,4 +1,5 @@
-import mongoose from 'mongoose';
+
+const mongoose = require("mongoose")
 const { Schema } = mongoose;
 
 const Userschema = new Schema({
@@ -10,7 +11,7 @@ const Userschema = new Schema({
         type : String,
         required : true,
     },
-    username : [{
+    roles : [{
         type : String,
         default : "Employee",
     }],

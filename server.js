@@ -11,9 +11,14 @@ const cors = require('cors');
 const mongoose = require("mongoose");
 const ConnectDB = require("./config/dbConn.js");
 const CorsOption = require("./config/corsOptions.js");
+const userRouter = require("./routes/userRoutes");
+const bodyParser = require("body-parser");
+
 
 ConnectDB();
 //require(file)
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cors(CorsOption));
 app.use(cookieParser());
 app.use(expres.json());
@@ -21,7 +26,12 @@ app.use(logger);
 app.use("/",expres.static(path.join(__dirname,"/public")));
 
 
+
+
 app.use('/',home)
+app.use("/user",userRouter)
+
+
 
 app.all('*',(req,res)=>{
     res.status(404);
