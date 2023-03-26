@@ -5,11 +5,11 @@ const { Schema } = mongoose;
 const Userschema = new Schema({
     username : {
         type : String,
-        required : true,
+        required : true ,
     },
     password : {
         type : String,
-        required : true,
+        required : true ,
     },
     roles : [{
         type : String,
@@ -17,7 +17,7 @@ const Userschema = new Schema({
     }],
     active : {
         type : Boolean,
-        required : true,
+        default : true
     },
 });
 

@@ -19,8 +19,8 @@ const getUser = asnycHandler(async(req,res)=>{
 });
 
 const posttUser = asnycHandler(async(req,res)=>{
-    const {username ,password , roles} = req.body
-
+    const {username , password ,roles} = req.body
+    console.log(`username ${username} password ${password} roles ${roles}`)
     if(!username || !password || !Array.isArray(roles) || !roles.length){
         return res.status(400).json({message : "비밀번호 와 아이디는 필수입니다."})
     }
@@ -29,29 +29,36 @@ const posttUser = asnycHandler(async(req,res)=>{
     if(duplicate){
         return res.status().json({message : "아이디가 중복됩니다."})
     }
+    
 
-    const hashpassword = bcrypt.hash(password , 5 , (err,hash)=>{
-        if(err){
-            return res.json({message : err.message})
-        }else{
-            console.log(hashpassword)
+   
+    const hashpassword = async () =>{
+        {
+            try {
+                const hash = bcrypt.hashSync(plainPassword, saltRounds);
+                console.log(hash);
+              } catch (err) {
+                console.error(err);
+            }
         }
-    })
+    }
+    
+   
     
     const userObj = {username , password : hashpassword , roles}
-    await User.create(userObj);
+    const result =  await User.create(userObj);
 
-    if(userObj){
-        res.status(200).json({message : "회원가입 성공"});
+    if(result){
+       return res.status(200).json({message : "회원가입 성공"});
     }else{
-        res.status(400).json({message  :"예상치 못한 오류 발생!"});
+        return res.status(400).json({message  :"예상치 못한 오류 발생!"});
     }
 });
 
 
 
 const updateUser = asnycHandler(async(req,res)=>{
-    const { id   ,username ,password , roles , active } = req.body
+    const { id  ,username ,password , roles , active } = req.body
 
     //유저가 id를 입력해야하는가? , username을 입력해서 찾으면되는거 아닌가?
     
@@ -81,7 +88,7 @@ const updateUser = asnycHandler(async(req,res)=>{
             if(err){
                 return res.json({message : err.message})
             }else{
-                user.password = hashpassword
+                return user.password = hash
             }
         })
     }

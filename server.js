@@ -16,7 +16,7 @@ const bodyParser = require("body-parser");
 
 
 ConnectDB();
-//require(file)
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use(cors(CorsOption));
@@ -29,7 +29,7 @@ app.use("/",expres.static(path.join(__dirname,"/public")));
 
 
 app.use('/',home)
-app.use("/user",userRouter)
+app.use("/users",userRouter)
 
 
 
@@ -38,7 +38,7 @@ app.all('*',(req,res)=>{
     res.sendFile(path.join(__dirname,"/views","404.html"));
 })
 
-app.use(errorHandler);
+// app.use(errorHandler);
 
 mongoose.connection.once("open",()=>{
     app.listen(PORT ,()=>{

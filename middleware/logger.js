@@ -4,6 +4,8 @@ const fs = require('fs');
 const fsPromise = require("fs").promises;
 const path = require("path");
 
+
+
 const logEvent = async(message , logFilename) => {
     const dataTime = `${format(new Date(), 'yyyy-MM-dd')}`
     const logItem = `${dataTime}\t${uuid()}\t${message}\n`
@@ -11,17 +13,20 @@ const logEvent = async(message , logFilename) => {
             if(!fs.existsSync(path.join(__dirname,"..",'logs'))){
                 await fsPromise.mkdir(path.join(__dirname,"..",'logs'))
             }
+           
             await fsPromise.appendFile(path.join(__dirname,"..",'logs' , logFilename),logItem)
 
     }catch(err){
+        console.log("이 부분 에러");
         console.log(err);
     }
 }
 
 
-const logger = ( req ,res ,next )=>{
-    logEvent(`${req.method}\t${req.url}\t${req.header.origin}`,'reqLog.log');
-    console.log(`method ${req.method} , path :  ${req.path}`);
+const logger = ( req , res ,next )=>{
+    path
+    logEvent(`${req.method}\t${req.url}\t${req.header.origin}\t${req.path}`,'reqLog.log');
+    console.log(`method ${req.method} , path : ${req.path}`);
     next();
 }
 
